@@ -1,8 +1,0 @@
-# Default ignored files
-/shelf/
-/workspace.xml
-
-# Generated files
-.idea/
-.vscode/
-.src/main/resources/config.env
