@@ -15,4 +15,4 @@ target/
 .DS_Store
 
 ### Конфігурації ###
-src/main/resources/config.env
+src/config.env
