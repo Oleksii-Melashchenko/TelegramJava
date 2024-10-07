@@ -11,7 +11,7 @@ import java.util.List;
 
 public class YouTubeSearchService {
     private static final Dotenv dotenv = Dotenv.load();
-    private static final String API_KEY = dotenv.get("YOUTUBE_API");
+    private static final String API_KEY = dotenv.get("YOUTUBE_API_KEY");
     private static final long NUMBER_OF_VIDEOS_RETURNED = 1;
 
     public String searchVideo(String query) {
