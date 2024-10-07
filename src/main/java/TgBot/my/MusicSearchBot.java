@@ -17,7 +17,7 @@ public class MusicSearchBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return dotenv.get("BOT_TOKEN");
+        return dotenv.get("TELEGRAM_API_KEY");
     }
 
     @Override
