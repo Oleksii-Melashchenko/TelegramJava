@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="TelegramJava:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8a1961fb-9acc-403d-9cd9-eec1622344e8" name="Changes" comment="initial commit">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/TgBot/my/MusicSearchBot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TgBot/my/MusicSearchBot.java" afterDir="false" />
+    <list default="true" id="8a1961fb-9acc-403d-9cd9-eec1622344e8" name="Changes" comment="added downloading mp3">
       <change beforePath="$PROJECT_DIR$/src/main/java/TgBot/my/YouTubeSearchService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TgBot/my/YouTubeSearchService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -23,19 +26,6 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <favorite-branches>
-      <branch-storage>
-        <map>
-          <entry type="LOCAL">
-            <value>
-              <list>
-                <branch-info repo="$PROJECT_DIR$" source="dev" />
-              </list>
-            </value>
-          </entry>
-        </map>
-      </branch-storage>
-    </favorite-branches>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
         <entry key="$PROJECT_DIR$" value="master" />
@@ -160,7 +150,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728316140183</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="added downloading mp3">
+      <option name="closed" value="true" />
+      <created>1728389203438</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1728389203438</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -176,7 +174,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="initial commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="initial commit" />
+    <MESSAGE value="added downloading mp3" />
+    <option name="LAST_COMMIT_MESSAGE" value="added downloading mp3" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

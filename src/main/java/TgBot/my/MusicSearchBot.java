@@ -44,7 +44,7 @@ public class MusicSearchBot extends TelegramLongPollingBot {
                         youtubeSearchService.searchOnYouTube(chatId, query, this);
                         break;
                     case "download_mp3":
-                        youtubeSearchService.downloadAndSendMp3(chatId, query, this);
+                        youtubeSearchService.downloadAndSendMp3(chatId, query, query, this);
                         break;
                     default:
                         sendErrorMessage(chatId, "Unknown action.");

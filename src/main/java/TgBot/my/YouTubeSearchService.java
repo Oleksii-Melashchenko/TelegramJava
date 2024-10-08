@@ -62,13 +62,13 @@ public class YouTubeSearchService {
         }
     }
 
-    public void downloadAndSendMp3(long chatId, String videoUrl, MusicSearchBot bot) {
+    public void downloadAndSendMp3(long chatId, String videoUrl, String userQuery, MusicSearchBot bot) {
         File tempMp3File = null;
         try {
-            String projectPath = System.getProperty("user.dir");
-            tempMp3File = new File(projectPath, "audio_" + System.currentTimeMillis() + ".mp3");
+            String sanitizedQuery = userQuery.replaceAll("[^a-zA-Z0-9\\s]", "").trim();
+            String fileName = sanitizedQuery.isEmpty() ? "audio" : sanitizedQuery.replaceAll("\\s+", "_");
+            tempMp3File = new File("C:\\Path\\To\\Your\\Project\\" + fileName + ".mp3");
             String searchQuery = "ytsearch:" + videoUrl;
-
             ProcessBuilder processBuilder = new ProcessBuilder(
                     "yt-dlp", "-x", "--audio-format", "mp3", "-o", tempMp3File.getAbsolutePath(), searchQuery
             );
@@ -80,10 +80,9 @@ public class YouTubeSearchService {
                     System.out.println(line);
                 }
             }
-
             int exitCode = process.waitFor();
             if (exitCode != 0) {
-                System.out.println("yt-dlp error. Exit code: " + exitCode);
+                System.out.println("yt-dlp завершился с ошибкой. Код: " + exitCode);
             }
             if (tempMp3File.length() > 0) {
                 SendAudio sendAudio = new SendAudio();
@@ -93,7 +92,7 @@ public class YouTubeSearchService {
             } else {
                 SendMessage errorMessage = new SendMessage();
                 errorMessage.setChatId(String.valueOf(chatId));
-                errorMessage.setText("Error with loading mp3, file is empty.");
+                errorMessage.setText("Ошибка при загрузке MP3, файл пустой.");
                 bot.execute(errorMessage);
             }
         } catch (IOException | InterruptedException | TelegramApiException e) {
@@ -101,7 +100,7 @@ public class YouTubeSearchService {
             try {
                 SendMessage errorMessage = new SendMessage();
                 errorMessage.setChatId(String.valueOf(chatId));
-                errorMessage.setText("Error with loading mp3.");
+                errorMessage.setText("Ошибка при загрузке MP3.");
                 bot.execute(errorMessage);
             } catch (TelegramApiException ex) {
                 ex.printStackTrace();
