@@ -82,7 +82,7 @@ public class YouTubeSearchService {
             }
             int exitCode = process.waitFor();
             if (exitCode != 0) {
-                System.out.println("yt-dlp завершился с ошибкой. Код: " + exitCode);
+                System.out.println("yt-dlp Error. Exit code: " + exitCode);
             }
             if (tempMp3File.length() > 0) {
                 SendAudio sendAudio = new SendAudio();
@@ -92,7 +92,7 @@ public class YouTubeSearchService {
             } else {
                 SendMessage errorMessage = new SendMessage();
                 errorMessage.setChatId(String.valueOf(chatId));
-                errorMessage.setText("Ошибка при загрузке MP3, файл пустой.");
+                errorMessage.setText("Error with loading mp3, file is empty.");
                 bot.execute(errorMessage);
             }
         } catch (IOException | InterruptedException | TelegramApiException e) {
@@ -100,7 +100,7 @@ public class YouTubeSearchService {
             try {
                 SendMessage errorMessage = new SendMessage();
                 errorMessage.setChatId(String.valueOf(chatId));
-                errorMessage.setText("Ошибка при загрузке MP3.");
+                errorMessage.setText("Error with loading mp3.");
                 bot.execute(errorMessage);
             } catch (TelegramApiException ex) {
                 ex.printStackTrace();
