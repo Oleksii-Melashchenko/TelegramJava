@@ -8,7 +8,10 @@ import com.google.api.services.youtube.model.SearchResult;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.meta.api.methods.send.SendAudio;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 
+import java.io.*;
 
 import java.util.List;
 
@@ -35,7 +38,7 @@ public class YouTubeSearchService {
             search.setKey(API_KEY);
             search.setQ(query);
             search.setType("video");
-            search.setMaxResults(5L);
+            search.setMaxResults(1L);
             SearchListResponse searchResponse = search.execute();
             List<SearchResult> searchResults = searchResponse.getItems();
 
@@ -59,26 +62,59 @@ public class YouTubeSearchService {
         }
     }
 
-    public void downloadMp3(long chatId, String videoUrl, MusicSearchBot bot) {
+    public void downloadAndSendMp3(long chatId, String videoUrl, MusicSearchBot bot) {
+        File tempMp3File = null;
         try {
-            String command = "youtube-dl -x --audio-format mp3 " + videoUrl;
-            Process process = Runtime.getRuntime().exec(command);
-            process.waitFor();
-            SendMessage message = new SendMessage();
-            message.setChatId(String.valueOf(chatId));
-            message.setText("MP3 файл загружен.");
-            bot.execute(message);
-        } catch (Exception e) {
+            String projectPath = System.getProperty("user.dir");
+            tempMp3File = new File(projectPath, "audio_" + System.currentTimeMillis() + ".mp3");
+            String searchQuery = "ytsearch:" + videoUrl;
+
+            ProcessBuilder processBuilder = new ProcessBuilder(
+                    "yt-dlp", "-x", "--audio-format", "mp3", "-o", tempMp3File.getAbsolutePath(), searchQuery
+            );
+            processBuilder.redirectErrorStream(true);
+            Process process = processBuilder.start();
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    System.out.println(line);
+                }
+            }
+
+            int exitCode = process.waitFor();
+            if (exitCode != 0) {
+                System.out.println("yt-dlp error. Exit code: " + exitCode);
+            }
+            if (tempMp3File.length() > 0) {
+                SendAudio sendAudio = new SendAudio();
+                sendAudio.setChatId(String.valueOf(chatId));
+                sendAudio.setAudio(new InputFile(tempMp3File));
+                bot.execute(sendAudio);
+            } else {
+                SendMessage errorMessage = new SendMessage();
+                errorMessage.setChatId(String.valueOf(chatId));
+                errorMessage.setText("Error with loading mp3, file is empty.");
+                bot.execute(errorMessage);
+            }
+        } catch (IOException | InterruptedException | TelegramApiException e) {
             e.printStackTrace();
             try {
                 SendMessage errorMessage = new SendMessage();
                 errorMessage.setChatId(String.valueOf(chatId));
-                errorMessage.setText("Ошибка при загрузке MP3.");
+                errorMessage.setText("Error with loading mp3.");
                 bot.execute(errorMessage);
             } catch (TelegramApiException ex) {
                 ex.printStackTrace();
             }
+        } finally {
+            if (tempMp3File != null && tempMp3File.exists()) {
+                tempMp3File.delete();
+            }
         }
     }
 }
+
+
+
+
 
